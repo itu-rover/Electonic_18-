@@ -1,0 +1,26 @@
+--cpu Cortex-M0
+"main_board\startup_stm32f091xc.o"
+"main_board\stm32f0xx_hal_cortex.o"
+"main_board\stm32f0xx_hal_i2c.o"
+"main_board\stm32f0xx_hal_rcc_ex.o"
+"main_board\stm32f0xx_hal_dma.o"
+"main_board\stm32f0xx_hal_uart.o"
+"main_board\stm32f0xx_hal_i2c_ex.o"
+"main_board\stm32f0xx_hal_pwr_ex.o"
+"main_board\stm32f0xx_hal_flash_ex.o"
+"main_board\stm32f0xx_hal.o"
+"main_board\stm32f0xx_hal_tim.o"
+"main_board\stm32f0xx_hal_pwr.o"
+"main_board\stm32f0xx_hal_flash.o"
+"main_board\stm32f0xx_hal_uart_ex.o"
+"main_board\stm32f0xx_hal_tim_ex.o"
+"main_board\stm32f0xx_hal_rcc.o"
+"main_board\stm32f0xx_hal_gpio.o"
+"main_board\stm32f0xx_hal_msp.o"
+"main_board\stm32f0xx_it.o"
+"main_board\main.o"
+"main_board\system_stm32f0xx.o"
+--library_type=microlib --strict --scatter "main_board\main_board.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "main_board.map" -o main_board\main_board.axf
