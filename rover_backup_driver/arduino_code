@@ -1,0 +1,124 @@
+#include <String.h>
+String upcomingString;
+
+
+//THIS CODE IS RUNNING FIVE MOTOR DRIVERS ACCORDING TO THE FTDI INPUTS 
+
+//THIS IS THE BACKUP MOTOR DRIVERS JUST IN CASE
+
+
+
+//DEFINE GLOBAL VARIABLES
+ //pwm
+ 
+ int first_axis_PWM = 0;
+ int second_axis_PWM = 0;
+ int  third_axis_PWM = 0;
+ int  fourth_axis_PWM = 0;
+ int fifth_axis_PWM = 0;
+  //directions
+ int  first_axis_Dir = 0;
+ int  second_axis_Dir = 0;
+ int  third_axis_Dir = 0;
+ int  fourth_axis_Dir = 0;
+ int  fifth_axis_Dir = 0;
+
+
+int c =0;
+
+
+
+
+void driveAxis (int axis, int dir, int pwm){
+
+analogWrite(axis*2, (dir-1)*(dir-1)*pwm);
+analogWrite(1+axis*2, (dir)*(dir)*pwm);
+  /*  
+   if (dir == 1)
+  {
+    //drive forward
+    analogWrite(axis*2, 0);
+    analogWrite(1+axis*2, pwm);
+  }
+  else
+  {
+    //drive backward
+    analogWrite(axis*2, pwm);
+    analogWrite(1+axis*2, 0);
+  }
+  */
+}
+
+
+void debug () {
+  /*
+  Serial.println("New data");
+    Serial.println(first_axis_PWM);
+  Serial.println(second_axis_PWM);
+  Serial.println(third_axis_PWM);
+  Serial.println(fourth_axis_PWM);
+ */ 
+  Serial.println(fifth_axis_Dir);
+  Serial.println(fifth_axis_PWM);
+  
+}
+
+void parseData() {
+ //pwm
+  first_axis_PWM = upcomingString.substring(c-19, c-16).toInt()/4;
+  second_axis_PWM = upcomingString.substring(c-15, c-12).toInt()/4;
+  third_axis_PWM = upcomingString.substring(c-11, c-8).toInt()/4;
+  fourth_axis_PWM = upcomingString.substring(c-7, c-4).toInt()/4;
+  fifth_axis_PWM = upcomingString.substring(c-3, c).toInt()/4;
+  //directions
+  first_axis_Dir = upcomingString.substring(c-20,c-19).toInt();
+  second_axis_Dir = upcomingString.substring(c-16,c-15).toInt();
+  third_axis_Dir = upcomingString.substring(c-12,c-11).toInt();
+  fourth_axis_Dir = upcomingString.substring(c-8,c-7).toInt();
+  fifth_axis_Dir = upcomingString.substring(c-4,c-3).toInt();
+}
+
+void robotArmGo() {
+  driveAxis(1,first_axis_Dir,first_axis_PWM);
+  driveAxis(2,second_axis_Dir,second_axis_PWM);
+  driveAxis(3,third_axis_Dir,third_axis_PWM);
+  driveAxis(4,fourth_axis_Dir,fourth_axis_PWM);
+  driveAxis(5,fifth_axis_Dir,fifth_axis_PWM);
+}
+
+
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin(115200);
+//PINMODE CONFIG
+pinMode(2, OUTPUT);
+pinMode(3, OUTPUT);
+pinMode(4, OUTPUT);
+pinMode(5, OUTPUT);
+pinMode(6, OUTPUT);
+pinMode(7, OUTPUT);
+pinMode(8, OUTPUT);
+pinMode(9, OUTPUT);
+pinMode(10, OUTPUT);
+pinMode(11, OUTPUT);
+
+//Serial.print("I am alive");
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  //Serial.println("i am awaiting string");
+upcomingString= Serial.readStringUntil('F');
+c = upcomingString.length();
+//Serial.println(upcomingString);
+
+if(upcomingString[c-21] == 'S')
+{
+  
+  parseData();
+ debug();
+  robotArmGo();
+
+}
+
+}
